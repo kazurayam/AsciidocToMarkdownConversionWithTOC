@@ -16,7 +16,7 @@ Asciidocでドキュメントの原稿を書いてMarkdownに変換したもの�
 
 == 解決方法
 
-=== 今までわたしがどうやってきたかというと
+=== 今までどうやってきたか
 
 ネットを調べるとGitHubで公開するREADMEドキュメントにTOCを自動的につける方法がいくつも提案してされ実用されている。わたしも下記のツールを何年も使ってきた。
 
@@ -26,8 +26,30 @@ Asciidocでドキュメントの原稿を書いてMarkdownに変換したもの�
 
 === 新たな疑問
 
-前述のツールを使っていて少し不便に思うことがあった。わたしがREADME.mdファイルを編集してgit addしてgit commitしてgit pushする。するとpushのインベントを受けてGitHub Actionが起動され、README.mdファイルにTOCを挿入する。するとリモートレポジトリの中に格納されたREADME.mdファイルはわたしの手元にあるREADME.mdよりも1回分コミットが進んだ状態になる。だから私は次にREADME.mdを編集する前にgit pullしなければならない。さもないとローカルのREADME.mdファイルとリモートのREADME.mdファイルが同期しなくなってあとでmerge conflictが発生する。厄介だ。
+前述のツールを使っていて不便に思う場面があった。わたしがREADME.mdファイルを編集してgit addしてgit commitしてgit pushする。するとpushのインベントを受けてGitHub Actionが起動され、README.mdファイルにTOCを挿入する。するとリモートレポジトリの中に格納されたREADME.mdファイルはわたしの手元にあるREADME.mdよりも1回分コミットが進んだ状態になる。だから私は次にREADME.mdを編集する前にgit pullしなければならない。さもないとローカルのREADME.mdファイルとリモートのREADME.mdファイルが同期しなくなってあとでmerge conflictが発生する。厄介だ。
 
 ちょっと待てよ。わたしはAsciidocで原稿を書いてそれを入力としてMarkdownを生成するというアクションをbashシェルスクリプトとして記述し、手元のPC上で実行している。ならば目次を生成するのをローカルで実行できるのではないか？GitHub Actionに頼るのではなく。... 調べたら、出来ました。
 
 == Description
+
+bashシェルスクリプト `readmeconv.sh` を次のように修正した
+
+[quote, shell]
+----
+include::readmeconv.sh[]
+----
+
+pandocコマンドに `--standalon --toc` というオプションを指定することが肝心。
+
+コマンドラインで`readmeconv.sh`を実行するとき、`-t`オプションを付けるとTOCが生成されて`README.md`ファイルの先頭に挿入される。
+```
+$ ./readmeconv.sh -t
+```
+
+もちろん `-t` オプションを指定しなれば従前通りTOC無しで`README.md`ファイルが生成される。
+
+```
+$ ./readmeconv.sh
+```
+
+
