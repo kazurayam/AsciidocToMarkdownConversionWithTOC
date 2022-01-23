@@ -105,6 +105,8 @@ pandocコマンドに `--standalon --toc` というオプションを指定す�
 
     $ ./readmeconv.sh -t
 
+![README\_with\_TOC](docs/images/README_with_TOC.png)
+
 もちろん `-t` オプションを指定しなれば従前通りTOC無しで\`README.md\`ファイルが生成される。
 
     $ ./readmeconv.sh
