@@ -1,11 +1,11 @@
--   [AsciidocドキュメントからMarkdownドキュメントを生成する、ただし目次つきで](#_asciidocドキュメントからmarkdownドキュメントを生成するただし目次つきで)
+-   [目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で](#_目次つきのreadmeを作る_ただしローカルでasciidocからmarkdownへ変換する方法で)
     -   [解決すべき問題](#_解決すべき問題)
     -   [解決方法](#_解決方法)
         -   [今までどうやってきたか](#_今までどうやってきたか)
         -   [新たな疑問](#_新たな疑問)
     -   [Description](#_description)
 
-# AsciidocドキュメントからMarkdownドキュメントを生成する、ただし目次つきで
+# 目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で
 
 kazurayam
 v0.1, 2022-01-23

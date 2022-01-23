@@ -1,4 +1,5 @@
-= AsciidocドキュメントからMarkdownドキュメントを生成する、ただし目次つきで
+= 目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で
+
 kazurayam
 v0.1, 2022-01-23
 
