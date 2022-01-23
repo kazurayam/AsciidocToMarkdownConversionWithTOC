@@ -1,3 +1,10 @@
+-   [Converting Table Of Contents in Asciidoc to Markdown](#_converting_table_of_contents_in_asciidoc_to_markdown)
+    -   [Problem to solve](#_problem_to_solve)
+    -   [Solution](#_solution)
+        -   [Approach 1](#_approach_1)
+        -   [Approach 2](#_approach_2)
+    -   [Description](#_description)
+
 # Converting Table Of Contents in Asciidoc to Markdown
 
 Doc Writer &lt;<doc.writer@asciidoctor.org>&gt;

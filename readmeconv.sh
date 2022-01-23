@@ -7,7 +7,8 @@ find . -iname "*.adoc" -type f -maxdepth 1 -not -name "_*.adoc" | while read fna
   target=${fname//adoc/md}
   xml=${fname//adoc/xml}
   echo "converting $fname into $target"
-  asciidoctor -b docbook -a leveloffset=+1 -o - "$fname" | pandoc  --markdown-headings=atx --wrap=preserve -t markdown_strict -f docbook - > "$target"
+  asciidoctor -b docbook -a leveloffset=+1 -o - "$fname" > "$xml"
+  cat "$xml" | pandoc  --standalone --toc --markdown-headings=atx --wrap=preserve -t markdown_strict -f docbook - > "$target"
   echo deleting $xml
   rm -f "$xml"
 done
