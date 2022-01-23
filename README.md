@@ -1,15 +1,14 @@
--   [Converting Table Of Contents in Asciidoc to Markdown](#_converting_table_of_contents_in_asciidoc_to_markdown)
+-   [Asciidoc to Markdown conversion with Table Of Contents](#_asciidoc_to_markdown_conversion_with_table_of_contents)
     -   [Problem to solve](#_problem_to_solve)
     -   [Solution](#_solution)
         -   [Approach 1](#_approach_1)
         -   [Approach 2](#_approach_2)
     -   [Description](#_description)
 
-# Converting Table Of Contents in Asciidoc to Markdown
+# Asciidoc to Markdown conversion with Table Of Contents
 
-Doc Writer &lt;<doc.writer@asciidoctor.org>&gt;
-v1.0, 2013-08-01
-:toc:
+kazurayam &lt;<jedi@kazurayam.com>&gt;
+v0.1, 2022-01-23
 
 ## Problem to solve
 

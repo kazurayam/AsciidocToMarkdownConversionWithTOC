@@ -1,7 +1,6 @@
-= Converting Table Of Contents in Asciidoc to Markdown
-Doc Writer <doc.writer@asciidoctor.org>
-v1.0, 2013-08-01
-:toc:
+= Asciidoc to Markdown conversion with Table Of Contents
+kazurayam <jedi@kazurayam.com>
+v0.1, 2022-01-23
 
 == Problem to solve
 
