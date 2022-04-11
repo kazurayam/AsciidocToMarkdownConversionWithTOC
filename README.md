@@ -1,9 +1,9 @@
 -   [目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で](#_目次つきのreadmeを作る_ただしローカルでasciidocからmarkdownへ変換する方法で)
-    -   [Problem to solve](#_problem_to_solve)
-    -   [<span id="section2"></span>Solution](#_solution)
-        -   [My previous solution](#_my_previous_solution)
-        -   [従来の方法の課題](#_従来の方法の課題)
-    -   [<span id="section3"></span>Description of my new solution](#_description_of_my_new_solution)
+    -   [Problem to solve](#problem-to-solve)
+    -   [<span id="section2"></span>Solution](#solution)
+        -   [My previous solution](#my-previous-solution)
+        -   [従来の方法の課題](#従来の方法の課題)
+    -   [<span id="section3"></span>Description of my new solution](#description-of-my-new-solution)
 
 # 目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で
 
