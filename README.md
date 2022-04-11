@@ -1,9 +1,9 @@
 -   [目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で](#_目次つきのreadmeを作る_ただしローカルでasciidocからmarkdownへ変換する方法で)
     -   [Problem to solve](#_problem_to_solve)
-    -   [解決方法](#_解決方法)
-        -   [今までどうやってきたか](#_今までどうやってきたか)
-        -   [新たな疑問](#_新たな疑問)
-    -   [Description](#_description)
+    -   [Solution](#_solution)
+        -   [My previous solution](#_my_previous_solution)
+        -   [従来の方法の課題](#_従来の方法の課題)
+    -   [Description of my new solution](#_description_of_my_new_solution)
 
 # 目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で
 
@@ -24,9 +24,9 @@ GitHubプロジェクトを自作したらREADMEドキュメントをかなら�
 
 さてAsciidocでドキュメントの原稿を書いてMarkdownに変換したものをpublishするやり方はとても楽なので、ついつい長くて懇切丁寧な文章を書いてしまう。すると目次 (Table of contents) が欲しくなる。TOCを自動的に作りたいがどうやればいいか？
 
-## 解決方法
+## Solution
 
-### 今までどうやってきたか
+### My previous solution
 
 GitHubで公開するREADMEドキュメントにTOCを自動的につける方法がネット上にいくつも提案され実用されている。わたしも下記のツールを何年も使ってきた。
 
@@ -34,7 +34,7 @@ GitHubで公開するREADMEドキュメントにTOCを自動的につける方�
 
 このツールはちゃんと動くし便利だ。このツールは GitHub Action として動作する。
 
-### 新たな疑問
+### 従来の方法の課題
 
 前述のツールを使っていて不便に思う場面があった。わたしがREADME.mdファイルを編集してgit addしてgit commitしてgit pushする。するとpushのインベントを受けてGitHub Actionが起動され、README.mdファイルにTOCを挿入する。するとリモートレポジトリの中に格納されたREADME.mdファイルはわたしの手元にあるREADME.mdよりも1回分コミットが進んだ状態になる。だから私は次にREADME.mdを編集する前にgit pullしなければならない。さもないとローカルのREADME.mdファイルとリモートのREADME.mdファイルが同期しなくなってあとでmerge conflictが発生する。いったん発生したconflictをもみ消す作業はなかなか厄介だ。
 
@@ -42,7 +42,7 @@ GitHubで公開するREADMEドキュメントにTOCを自動的につける方�
 
 調べたら出来ました。
 
-## Description
+## Description of my new solution
 
 bashシェルスクリプト `readmeconv.sh` を次のように修正した
 
