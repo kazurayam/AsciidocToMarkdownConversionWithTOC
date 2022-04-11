@@ -1,3 +1,10 @@
+-   [目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で](#_目次つきのreadmeを作る_ただしローカルでasciidocからmarkdownへ変換する方法で)
+    -   [Problem to solve](#_problem_to_solve)
+    -   [<span id="section2"></span>Solution](#_solution)
+        -   [My previous solution](#_my_previous_solution)
+        -   [従来の方法の課題](#_従来の方法の課題)
+    -   [<span id="section3"></span>Description of my new solution](#_description_of_my_new_solution)
+
 # 目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で
 
 kazurayam
@@ -17,7 +24,7 @@ GitHubプロジェクトを自作したらREADMEドキュメントをかなら�
 
 さてAsciidocでドキュメントの原稿を書いてMarkdownに変換したものをpublishするやり方はとても楽なので、ついつい長くて懇切丁寧な文章を書いてしまう。すると目次 (Table of contents) が欲しくなる。TOCを自動的に作りたいがどうやればいいか？
 
-## Solution
+## <span id="section2"></span>Solution
 
 ### My previous solution
 
@@ -35,7 +42,7 @@ GitHubで公開するREADMEドキュメントにTOCを自動的につける方�
 
 調べたら出来ました。
 
-## Description of my new solution
+## <span id="section3"></span>Description of my new solution
 
 bashシェルスクリプト `readmeconv.sh` を次のように修正した
 

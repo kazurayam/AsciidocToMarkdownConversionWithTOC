@@ -17,7 +17,7 @@ GitHubプロジェクトを自作したらREADMEドキュメントをかなら�
 
 さてAsciidocでドキュメントの原稿を書いてMarkdownに変換したものをpublishするやり方はとても楽なので、ついつい長くて懇切丁寧な文章を書いてしまう。すると目次 (Table of contents) が欲しくなる。TOCを自動的に作りたいがどうやればいいか？
 
-== Solution
+== [[section2]]Solution
 
 === My previous solution
 
@@ -35,7 +35,7 @@ GitHubで公開するREADMEドキュメントにTOCを自動的につける方�
 
 調べたら出来ました。
 
-== Description of my new solution
+== [[section3]]Description of my new solution
 
 bashシェルスクリプト `readmeconv.sh` を次のように修正した
 
