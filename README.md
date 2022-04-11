@@ -1,10 +1,3 @@
--   [目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で](#_目次つきのreadmeを作る_ただしローカルでasciidocからmarkdownへ変換する方法で)
-    -   [Problem to solve](#_problem_to_solve)
-    -   [Solution](#_solution)
-        -   [My previous solution](#_my_previous_solution)
-        -   [従来の方法の課題](#_従来の方法の課題)
-    -   [Description of my new solution](#_description_of_my_new_solution)
-
 # 目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で
 
 kazurayam
