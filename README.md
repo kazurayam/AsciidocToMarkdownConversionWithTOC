@@ -1,9 +1,9 @@
--   [目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で](#_目次つきのreadmeを作る_ただしローカルでasciidocからmarkdownへ変換する方法で)
-    -   [Problem to solve](#problem-to-solve)
-    -   [<span id="section2"></span>Solution](#solution)
-        -   [My previous solution](#my-previous-solution)
-        -   [従来の方法の課題](#従来の方法の課題)
-    -   [<span id="section3"></span>Description of my new solution](#description-of-my-new-solution)
+-   [目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で](#()目次つきのreadmeを作る()ただしローカルでasciidocからmarkdownへ変換する方法で)
+    -   [Problem to solve](#()problem()to()solve)
+    -   [<span id="section2"></span>Solution](#()solution)
+        -   [My previous solution](#()my()previous()solution)
+        -   [従来の方法の課題](#()従来の方法の課題)
+    -   [<span id="section3"></span>Description of my new solution](#()description()of()my()new()solution)
 
 # 目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で
 
@@ -50,9 +50,9 @@ bashシェルスクリプト `readmeconv.sh` を次のように修正した
 
     # Convert all the files with name ending with `*.adoc` into `*.md`.
     # `*.adoc` is an Asciidoc document file, `*.md` is a Mardown document file.
-    # E.g, `readme_.adoc` will be converted into `readme_.md`
-    # Except ones with `_` as prefix.
-    # E.g, `_readme.adoc` is NOT processed by this script, will be left unprocessed.
+    # E.g, `readme().adoc` will be converted into `readme().md`
+    # Except ones with `()` as prefix.
+    # E.g, `()readme.adoc` is NOT processed by this script, will be left unprocessed.
     #
     # How to active this: in the command line, just type 
     # `> ./readmeconv.sh`
@@ -73,7 +73,7 @@ bashシェルスクリプト `readmeconv.sh` を次のように修正した
         esac
     done
 
-    find . -iname "*.adoc" -type f -maxdepth 1 -not -name "_*.adoc" | while read fname; do
+    find . -iname "*.adoc" -type f -maxdepth 1 -not -name "()*.adoc" | while read fname; do
         target=${fname//adoc/md}
         xml=${fname//adoc/xml}
         echo "converting $fname into $target"
@@ -81,10 +81,10 @@ bashシェルスクリプト `readmeconv.sh` を次のように修正した
         asciidoctor -b docbook -a leveloffset=+1 -o - "$fname" > "$xml"
         if [ $requireTOC = true ]; then
           # generate a Markdown file with Table of contents
-          cat "$xml" | pandoc --standalone --toc --markdown-headings=atx --wrap=preserve -t markdown_strict -f docbook - > "$target"
+          cat "$xml" | pandoc --standalone --toc --markdown-headings=atx --wrap=preserve -t markdown()strict -f docbook - | sed 's/\(()\)/()/g' > "$target"
         else
           # without TOC
-          cat "$xml" | pandoc --markdown-headings=atx --wrap=preserve -t markdown_strict -f docbook - > "$target"
+          cat "$xml" | pandoc --markdown-headings=atx --wrap=preserve -t markdown()strict -f docbook - > "$target"
         fi
         echo deleting $xml
         rm -f "$xml"
@@ -93,11 +93,18 @@ bashシェルスクリプト `readmeconv.sh` を次のように修正した
     # if we find a readme*.md (or README*.md), 
     # we rename all of them to a single README.md while overwriting,
     # effectively the last wins.
-    # E.g, if we have `readme_.md`, it will be overwritten into `README.md`
+    # E.g, if we have `readme().md`, it will be overwritten into `README.md`
     find . -iname "readme*.md" -not -name "README.md" -type f -maxdepth 1 | while read fname; do
         echo Renaming $fname to README.md
         mv $fname README.md
     done
+
+
+    # slightly modifies the generated README.md file
+    #     - [Solution 1](#()solution()1)
+    # will be translated to
+    #     - [Solution 1](#solution-1)
+    #cat README.md | groovy mdTocFilter.groovy > temp.md
 
 pandocコマンドに `--standalon --toc` というオプションを指定することが肝心。
 
@@ -105,7 +112,7 @@ pandocコマンドに `--standalon --toc` というオプションを指定す�
 
     $ ./readmeconv.sh -t
 
-![README\_with\_TOC](docs/images/README_with_TOC.png)
+![README\()with\()TOC](docs/images/README()with()TOC.png)
 
 もちろん `-t` オプションを指定しなれば従前通りTOC無しで\`README.md\`ファイルが生成される。
 

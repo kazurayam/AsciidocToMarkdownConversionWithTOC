@@ -33,7 +33,7 @@ find . -iname "*.adoc" -type f -maxdepth 1 -not -name "_*.adoc" | while read fna
     asciidoctor -b docbook -a leveloffset=+1 -o - "$fname" > "$xml"
     if [ $requireTOC = true ]; then
       # generate a Markdown file with Table of contents
-      cat "$xml" | pandoc --standalone --toc --markdown-headings=atx --wrap=preserve -t markdown_strict -f docbook - > "$target"
+      cat "$xml" | pandoc --standalone --toc --markdown-headings=atx --wrap=preserve -t markdown_strict -f docbook - | sed 's/\(_\)/()/g' > "$target"
     else
       # without TOC
       cat "$xml" | pandoc --markdown-headings=atx --wrap=preserve -t markdown_strict -f docbook - > "$target"
@@ -50,3 +50,10 @@ find . -iname "readme*.md" -not -name "README.md" -type f -maxdepth 1 | while re
     echo Renaming $fname to README.md
     mv $fname README.md
 done
+
+
+# slightly modifies the generated README.md file
+#     - [Solution 1](#_solution_1)
+# will be translated to
+#     - [Solution 1](#solution-1)
+#cat README.md | groovy mdTocFilter.groovy > temp.md
