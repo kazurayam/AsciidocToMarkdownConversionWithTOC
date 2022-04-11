@@ -1,9 +1,9 @@
--   [目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で](#目次つきのreadmeを作る_ただしローカルでasciidocからmarkdownへ変換する方法で)
-    -   [Problem to solve](#problem_to_solve)
+-   [目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で](#目次つきのreadmeを作る-ただしローカルでasciidocからmarkdownへ変換する方法で)
+    -   [Problem to solve](#problem-to-solve)
     -   [<span id="section2"></span>Solution](#solution)
-        -   [My previous solution](#my_previous_solution)
+        -   [My previous solution](#my-previous-solution)
         -   [従来の方法の課題](#従来の方法の課題)
-    -   [<span id="section3"></span>Description of my new solution](#description_of_my_new_solution)
+    -   [<span id="section3"></span>Description of my new solution](#description-of-my-new-solution)
 
 # 目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で
 
@@ -101,7 +101,7 @@ bashシェルスクリプト `readmeconv.sh` を次のように修正した
 
 
     # slightly modifies the generated README.md file
-    #     - [Solution 1](#solution_1)
+    #     - [Solution 1](#solution-1)
     # will be translated to
     #     - [Solution 1](#solution-1)
     cat README.md | groovy mdTocFilter.groovy > temp.md

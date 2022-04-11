@@ -16,7 +16,7 @@ while ((line = stdin.readLine()) != null) {
       println "group[" + i + "]=" + m.group(i)
     }
     */
-    println m.group(1) + '(#' + m.group(2)
+    println m.group(1) + '(#' + m.group(2).replace('_', '-')
   } else {
     //println "no match"
     println line
