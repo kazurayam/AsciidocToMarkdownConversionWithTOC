@@ -1,12 +1,3 @@
--   [目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で](#目次つきのreadmeを作る-ただしローカルでasciidocからmarkdownへ変換する方法で)
-    -   [Problem to solve](#problem-to-solve)
-    -   [解決方法](#解決方法)
-        -   [今まで使ってきた方法と課題](#今まで使ってきた方法と課題)
-    -   [代替的方法](#代替的方法)
-        -   [pandocにTOCを生成させる](#pandocにtocを生成させる)
-        -   [問題あり 目次から本文へのリンクが切れていた](#問題あり-目次から本文へのリンクが切れていた)
-    -   [結論](#結論)
-
 # 目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で
 
 kazurayam

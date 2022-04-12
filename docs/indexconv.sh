@@ -50,3 +50,12 @@ find . -iname "index*.md" -not -name "index.md" -type f -maxdepth 1 | while read
     echo Renaming $fname to index.md
     mv $fname index.md
 done
+
+
+# slightly modifies the generated index.md file
+#     - [Solution 1](#_solution_1)
+# will be translated to
+#     - [Solution 1](#solution-1)
+cat index.md | groovy ../mdTocFilter.groovy > temp.md
+cat temp.md > index.md
+rm temp.md
