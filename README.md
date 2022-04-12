@@ -1,32 +1,35 @@
 -   [目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で](#目次つきのreadmeを作る-ただしローカルでasciidocからmarkdownへ変換する方法で)
     -   [Problem to solve](#problem-to-solve)
-    -   [<span id="section2"></span>Solution](#solution)
-        -   [My previous solution](#my-previous-solution)
-        -   [従来の方法の課題](#従来の方法の課題)
-    -   [<span id="section3"></span>Description of my new solution](#description-of-my-new-solution)
+    -   [解決方法](#解決方法)
+        -   [今まで使ってきた方法と課題](#今まで使ってきた方法と課題)
+    -   [代替的方法](#代替的方法)
+        -   [pandocにTOCを生成させる](#pandocにtocを生成させる)
+        -   [問題あり 目次から本文へのリンクが切れていた](#問題あり-目次から本文へのリンクが切れていた)
+    -   [結論](#結論)
 
 # 目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で
 
 kazurayam
-v0.1, 2022-01-23
+v1, 2022-01-23
+v2, 2022-04-12
 
 ## Problem to solve
 
-GitHubプロジェクトを自作したらREADMEドキュメントをかならず書く。READMEドキュメントはMarkdownの構文で書くのが普通だ。Markdownはシンプルで短い説明を書くにはとても使いやすいが、長い文章を書くにはいささか非力だ。特にプログラムのソースコードをそのままREADMEに引用することができないので、いちいちコピペしなければならないのがつらい。
+GitHubプロジェクトを自作したらREADMEドキュメントをかならず書く。READMEドキュメントはMarkdownの構文で書くのが普通だ。Markdownはシンプルで短い説明を書くにはとても使いやすいが、長い文章を書くにはいささか非力だ。例えばinclude命令が無いのでプログラムのソースコードをREADME文書に引用することができない。いちいちプログラムのソースをREAMDE.mdにコピペしなければならないのがつらい。
 
-ネットをあちこち調べて Asciidocの構文でREADMEの原稿を書いてMarkdownに変換する方法を見つけた。そのスクリプトは下記のURLに公開されていたものだ。
+Asciidocの構文でREADMEの原稿を書いてMarkdownに変換する方法を見つけた。そのスクリプトは下記のURLに公開されていたものだ。
 
--   <https://github.com/github/markup/issues/1095> 9th June 2021に chevdoor が投稿したコード
+-   &lt;<https://github.com/github/markup/issues/1095>
 
-…​と言うことを以前私はQiitaに投稿した。
+ここまでの次第を私は以前Qiitaに投稿した。
 
 -   <https://qiita.com/kazurayam/items/361fdcd6846bba7bd03a>
 
-さてAsciidocでドキュメントの原稿を書いてMarkdownに変換したものをpublishするやり方はとても楽なので、ついつい長くて懇切丁寧な文章を書いてしまう。すると目次 (Table of contents) が欲しくなる。TOCを自動的に作りたいがどうやればいいか？
+さてAsciidocでドキュメントの原稿を書いてMarkdownに変換したものをpublishするやり方はとても楽なので、ついつい長くて懇切丁寧な文章を書いてしまう。すると目次 (TOC, Table of contents) が欲しくなる。TOCを自動的に作りたいがどうやればいいか？
 
-## <span id="section2"></span>Solution
+## 解決方法
 
-### My previous solution
+### 今まで使ってきた方法と課題
 
 GitHubで公開するREADMEドキュメントにTOCを自動的につける方法がネット上にいくつも提案され実用されている。わたしも下記のツールを何年も使ってきた。
 
@@ -34,17 +37,17 @@ GitHubで公開するREADMEドキュメントにTOCを自動的につける方�
 
 このツールはちゃんと動くし便利だ。このツールは GitHub Action として動作する。
 
-### 従来の方法の課題
+しかしこのツールを使っていて不便に思う場面があった。わたしがREADME.mdファイルを編集してgit addしてgit commitしてgit pushする。するとpushのインベントを受けてGitHub Actionが起動され、README.mdファイルにTOCを挿入する。するとリモートレポジトリの中に格納されたREADME.mdファイルはわたしの手元にあるREADME.mdよりも1回分コミットが進んだ状態になる。だから私は次にREADME.mdを編集する前にgit pullしなければならない。さもないとローカルのREADME.mdファイルとリモートのREADME.mdファイルが同期しなくなってあとでmerge conflictが発生する。いったん発生させてしまったconflictをもみ消す作業は厄介だ。confictを数回経験してわたしは嫌になってしまった。
 
-前述のツールを使っていて不便に思う場面があった。わたしがREADME.mdファイルを編集してgit addしてgit commitしてgit pushする。するとpushのインベントを受けてGitHub Actionが起動され、README.mdファイルにTOCを挿入する。するとリモートレポジトリの中に格納されたREADME.mdファイルはわたしの手元にあるREADME.mdよりも1回分コミットが進んだ状態になる。だから私は次にREADME.mdを編集する前にgit pullしなければならない。さもないとローカルのREADME.mdファイルとリモートのREADME.mdファイルが同期しなくなってあとでmerge conflictが発生する。いったん発生したconflictをもみ消す作業はなかなか厄介だ。
-
-ちょっと待てよ。わたしはAsciidocで原稿を書いてそれを入力としてMarkdownを生成するというアクションをbashシェルスクリプトとして記述し、手元のPC上で実行している。ならば目次を生成するのをローカルで実行できるのではないか？GitHub Actionに頼るのではなく。
+ちょっと待てよ。わたしはAsciidocで原稿を書いてそれを入力としてMarkdownを生成するというアクションをbashシェルスクリプトとして記述し、手元のPC上で実行している。ならば目次を生成するのをローカルでシェルによって実行できるのではないか？GitHub Actionに頼るのではなく。
 
 調べたら出来ました。
 
-## <span id="section3"></span>Description of my new solution
+## 代替的方法
 
-bashシェルスクリプト `readmeconv.sh` を次のように修正した
+### pandocにTOCを生成させる
+
+bashシェルスクリプト `readmeconv.sh` を次のように記述した
 
     #!/usr/bin/env bash
 
@@ -54,7 +57,7 @@ bashシェルスクリプト `readmeconv.sh` を次のように修正した
     # Except ones with `_` as prefix.
     # E.g, `_readme.adoc` is NOT processed by this script, will be left unprocessed.
     #
-    # How to active this: in the command line, just type 
+    # How to active this: in the command line, just type
     # `> ./readmeconv.sh`
     #
     # Can generate Table of content in the output *.md file by specifying `-t` option
@@ -90,7 +93,7 @@ bashシェルスクリプト `readmeconv.sh` を次のように修正した
         rm -f "$xml"
     done
 
-    # if we find a readme*.md (or README*.md), 
+    # if we find a readme*.md (or README*.md),
     # we rename all of them to a single README.md while overwriting,
     # effectively the last wins.
     # E.g, if we have `readme_.md`, it will be overwritten into `README.md`
@@ -99,23 +102,108 @@ bashシェルスクリプト `readmeconv.sh` を次のように修正した
         mv $fname README.md
     done
 
+pandocコマンドに `--standalon --toc` というオプションを指定していることが肝心。コマンドラインで `readmeconv.sh` を実行するとき、`-t` オプションを付ける。するとTOCが生成されて `README.md` ファイルの先頭に挿入される。
 
-    # slightly modifies the generated README.md file
-    #     - [Solution 1](#solution-1)
-    # will be translated to
-    #     - [Solution 1](#solution-1)
+    $ ./readmeconv.sh -t
+
+もちろん `-t` オプションを指定しなればTOC無しで `README.md` ファイルが生成される。
+
+    $ ./readmeconv.sh
+
+目次が付加された `REAMDE.md` はこんな姿形になった。
+
+![README\_with\_TOC](https://kazurayam.github.io/AsciidocToMarkdownConversionWithTOC/images/README_with_TOC.png)
+
+#### ツールのバージョン
+
+わたしは自分の環境に下記のツールをインストールした。
+
+-   [asciidoctor](https://asciidoctor.org/)
+
+-   [pandoc](https://pandoc.org/)
+
+バージョンは下記のとおりだった。
+
+    $ asciidoctor -v
+    Asciidoctor 2.0.16 [https://asciidoctor.org]
+    Runtime Environment (ruby 2.6.8p205 (2021-07-07 revision 67951) [universal.x86_64-darwin21]) (lc:UTF-8 fs:UTF-8 in:UTF-8 ex:UTF-8)
+    :~/github/AsciidocToMarkdownConversionWithTOC (master *)
+    $ pandoc -v
+    pandoc 2.16.1
+    Compiled with pandoc-types 1.22.1, texmath 0.12.3.2, skylighting 0.12.1,
+    citeproc 0.6, ipynb 0.1.0.2
+    User data directory: /Users/kazurayam/.local/share/pandoc
+    Copyright (C) 2006-2021 John MacFarlane. Web:  https://pandoc.org
+    This is free software; see the source for copying conditions. There is no
+    warranty, not even for merchantability or fitness for a particular purpose.
+
+### 問題あり 目次から本文へのリンクが切れていた
+
+pandocが生成した\`README.md\`をGitHubにpushした。ブラウザで開いた。そして目次の中のリンクをクリックした。本文の該当箇所へジャンプすることを期待していたが、ジャンプしなかった。なぜだ？
+
+ファイルとHTMLソースコードを解読したところ、目次の中のリンクが切れていることが判明した。
+
+TOC内のリンク部分のHTMLコードがこれ:
+
+    <a href="#_my_previous_solution">My previous solution</a>
+
+ジャンプ先のHTMLコードがこれ:
+
+    <a id="my-previous-solution" ...>
+
+よく見ると href="#\_my\_previous\_solution" と id="my-previous-solution" とが対応していない。 \_ と - とは違う文字だもの。だからリンク切れするのは当然だ。どうしてこうなってしまったのだろうか？pandocが生成したREAMD.mdファイルのコードをよく見るとこうなっていた。
+
+      -   [My previous solution](#my-previous-solution)
+
+このコードは誤りなのではないか？下記のようなコードをpandocが生成してくれたら解決するだろう。
+
+      -   [My previous solution](#my-previous-solution)
+
+この推測にもとづき README.md ファイルを手書きで修正してGitHubにpushして見た。するとリンクが正しく動いた。
+
+pandocがどうしてこのように動作するのか、わたしは知らない。バグなのかどうかも判断できない。まあ、それはいいことにしよう。わたしがいま望むのはGitHubにアップしたREADME文書のTOCから本文へのリンクが正しく動作することだ。そのためにツールを開発して、pandocが生成したREADME.mdファイルを書き換えることにした。
+
+#### mdTocFilter.groovy
+
+Groovy言語でスクリプトを書いた。
+
+    /**
+     * mdTocFilter.groovy
+     */
+    import java.util.regex.Pattern
+    import java.util.regex.Matcher
+    Pattern pattern = Pattern.compile('^(.*)\\(#(.*)$')
+    def stdin = System.in.newReader()
+    String line
+    while ((line = stdin.readLine()) != null) {
+      Matcher m = pattern.matcher(line)
+      if (m.matches()) {
+        /*
+        println "does match"
+        println "groupCount=" + m.groupCount()
+        for (int i = 0; i <= m.groupCount(); i++) {
+          println "group[" + i + "]=" + m.group(i)
+        }
+        */
+        println m.group(1) + '(#' + m.group(2).replace('_', '-')
+      } else {
+        //println "no match"
+        println line
+      }
+    }
+
+このスクリプトがしているのは単純だ。REAMDE.mdファイルの全行をスキャンし、`(#_` を含む行を選んで書き換える。 `(#my-previous-solution)` を `(#my-previous-solution)` に置換する。
+
+そして [readmeconv.sh](readmeconv.sh) の末尾に下記の数行を追加した。
+
     cat README.md | groovy mdTocFilter.groovy > temp.md
     cat temp.md > README.md
     rm temp.md
 
-pandocコマンドに `--standalon --toc` というオプションを指定することが肝心。
+このフィルタ処理を経た README.md ファイルをGitHubにpushした。TOCから本文へのジャンプが正しく動作するようになった。
 
-コマンドラインで\`readmeconv.sh\`を実行するとき、\`-t\`オプションを付けるとTOCが生成されて\`README.md\`ファイルの先頭に挿入される。
+わたしは最初このフィルタをシェルのsedコマンドやawkで作ろうと試みたがちょっと難しかった。自分のPCにたまたまGroovy環境が整っていたのでフィルタをGroovyで実装した。Perl、Python、Ruby、Nodeでも同等のフィルタを実装できるだろう。
 
-    $ ./readmeconv.sh -t
+## 結論
 
-![README\_with\_TOC](docs/images/README_with_TOC.png)
-
-もちろん `-t` オプションを指定しなれば従前通りTOC無しで\`README.md\`ファイルが生成される。
-
-    $ ./readmeconv.sh
+わたしはGitHubプロジェクトのREADMEドキュメントをAsciidocで書いている。プログラムのソースコードを文中にincludeするのを自動化したかったから。READMEが長文になったので目次をつけたくなった。pandocコマンドに\`--toc\`オプションを指定して目次を生成したが、残念なながらリンク切れになってしまった。pandocが生成したREADME.mdファイルをほんの少し書きかえるフィルタを自作して、リンク切れを解消することができた。
