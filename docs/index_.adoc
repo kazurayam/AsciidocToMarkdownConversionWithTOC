@@ -1,13 +1,4 @@
-= index
+== index
 
-== section 1
 
-=== subsection 1.1
-
-Hello
-
-== section 2
-
-=== subsection 2.1
-
-How are you
+image::./images/README_with_TOC.png[]

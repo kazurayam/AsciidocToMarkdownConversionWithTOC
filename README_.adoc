@@ -1,25 +1,26 @@
 = 目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で
 
 kazurayam
-v0.1, 2022-01-23
+v1, 2022-01-23
+v2, 2022-04-12
 
 == Problem to solve
 
-GitHubプロジェクトを自作したらREADMEドキュメントをかならず書く。READMEドキュメントはMarkdownの構文で書くのが普通だ。Markdownはシンプルで短い説明を書くにはとても使いやすいが、長い文章を書くにはいささか非力だ。特にプログラムのソースコードをそのままREADMEに引用することができないので、いちいちコピペしなければならないのがつらい。
+GitHubプロジェクトを自作したらREADMEドキュメントをかならず書く。READMEドキュメントはMarkdownの構文で書くのが普通だ。Markdownはシンプルで短い説明を書くにはとても使いやすいが、長い文章を書くにはいささか非力だ。例えば`include`命令が無い。だからプログラムのソースコードをそのままREADME文書に引用することができなくて、いちいちコピペしなければならないのがつらい。
 
 ネットをあちこち調べて Asciidocの構文でREADMEの原稿を書いてMarkdownに変換する方法を見つけた。そのスクリプトは下記のURLに公開されていたものだ。
 
-- https://github.com/github/markup/issues/1095 9th June 2021に chevdoor が投稿したコード
+-   <https://github.com/github/markup/issues/1095> 9th June 2021に chevdoor が投稿したコード
 
-...と言うことを以前私はQiitaに投稿した。
+…​と言うことを以前私はQiitaに投稿した。
 
 - https://qiita.com/kazurayam/items/361fdcd6846bba7bd03a
 
-さてAsciidocでドキュメントの原稿を書いてMarkdownに変換したものをpublishするやり方はとても楽なので、ついつい長くて懇切丁寧な文章を書いてしまう。すると目次 (Table of contents) が欲しくなる。TOCを自動的に作りたいがどうやればいいか？
+さてAsciidocでドキュメントの原稿を書いてMarkdownに変換したものをpublishするやり方はとても楽なので、ついつい長くて懇切丁寧な文章を書いてしまう。すると目次 (TOC, Table of contents) が欲しくなる。TOCを自動的に作りたいがどうやればいいか？
 
-== [[section2]]Solution
+== 解決方法
 
-=== My previous solution
+=== 今まで使ってきた方法
 
 GitHubで公開するREADMEドキュメントにTOCを自動的につける方法がネット上にいくつも提案され実用されている。わたしも下記のツールを何年も使ってきた。
 
@@ -27,21 +28,74 @@ GitHubで公開するREADMEドキュメントにTOCを自動的につける方�
 
 このツールはちゃんと動くし便利だ。このツールは GitHub Action として動作する。
 
-=== 従来の方法の課題
+=== 今までの方法の課題
 
-前述のツールを使っていて不便に思う場面があった。わたしがREADME.mdファイルを編集してgit addしてgit commitしてgit pushする。するとpushのインベントを受けてGitHub Actionが起動され、README.mdファイルにTOCを挿入する。するとリモートレポジトリの中に格納されたREADME.mdファイルはわたしの手元にあるREADME.mdよりも1回分コミットが進んだ状態になる。だから私は次にREADME.mdを編集する前にgit pullしなければならない。さもないとローカルのREADME.mdファイルとリモートのREADME.mdファイルが同期しなくなってあとでmerge conflictが発生する。いったん発生したconflictをもみ消す作業はなかなか厄介だ。
+前述のツールを使っていて不便に思う場面があった。わたしがREADME.mdファイルを編集してgit addしてgit commitしてgit pushする。するとpushのインベントを受けてGitHub Actionが起動され、README.mdファイルにTOCを挿入する。するとリモートレポジトリの中に格納されたREADME.mdファイルはわたしの手元にあるREADME.mdよりも1回分コミットが進んだ状態になる。だから私は次にREADME.mdを編集する前にgit pullしなければならない。さもないとローカルのREADME.mdファイルとリモートのREADME.mdファイルが同期しなくなってあとでmerge conflictが発生する。いったん発生させてしまったconflictをもみ消す作業はなかなか厄介だ。
 
 ちょっと待てよ。わたしはAsciidocで原稿を書いてそれを入力としてMarkdownを生成するというアクションをbashシェルスクリプトとして記述し、手元のPC上で実行している。ならば目次を生成するのをローカルで実行できるのではないか？GitHub Actionに頼るのではなく。
 
 調べたら出来ました。
 
-== [[section3]]Description of my new solution
+== 代替的方法
+
+=== pandocにTOCを生成させる
 
 bashシェルスクリプト `readmeconv.sh` を次のように修正した
 
 [quote, shell]
 ----
-include::readmeconv.sh[]
+#!/usr/bin/env bash
+
+# Convert all the files with name ending with `*.adoc` into `*.md`.
+# `*.adoc` is an Asciidoc document file, `*.md` is a Mardown document file.
+# E.g, `readme_.adoc` will be converted into `readme_.md`
+# Except ones with `_` as prefix.
+# E.g, `_readme.adoc` is NOT processed by this script, will be left unprocessed.
+#
+# How to active this: in the command line, just type 
+# `> ./readmeconv.sh`
+#
+# Can generate Table of content in the output *.md file by specifying `-t` option
+# `> ./readmeconv.sh -t`
+
+requireTOC=false
+
+optstring="t"
+while getopts ${optstring} arg; do
+    case ${arg} in
+        t)
+            requireTOC=true
+            ;;
+        ?)
+            ;;
+    esac
+done
+
+find . -iname "*.adoc" -type f -maxdepth 1 -not -name "_*.adoc" | while read fname; do
+    target=${fname//adoc/md}
+    xml=${fname//adoc/xml}
+    echo "converting $fname into $target"
+    # converting a *.adoc into a docbook
+    asciidoctor -b docbook -a leveloffset=+1 -o - "$fname" > "$xml"
+    if [ $requireTOC = true ]; then
+      # generate a Markdown file with Table of contents
+      cat "$xml" | pandoc --standalone --toc --markdown-headings=atx --wrap=preserve -t markdown_strict -f docbook - > "$target"
+    else
+      # without TOC
+      cat "$xml" | pandoc --markdown-headings=atx --wrap=preserve -t markdown_strict -f docbook - > "$target"
+    fi
+    echo deleting $xml
+    rm -f "$xml"
+done
+
+# if we find a readme*.md (or README*.md), 
+# we rename all of them to a single README.md while overwriting,
+# effectively the last wins.
+# E.g, if we have `readme_.md`, it will be overwritten into `README.md`
+find . -iname "readme*.md" -not -name "README.md" -type f -maxdepth 1 | while read fname; do
+    echo Renaming $fname to README.md
+    mv $fname README.md
+done
 ----
 
 pandocコマンドに `--standalon --toc` というオプションを指定することが肝心。
@@ -51,12 +105,37 @@ pandocコマンドに `--standalon --toc` というオプションを指定す�
 $ ./readmeconv.sh -t
 ```
 
-image::docs/images/README_with_TOC.png[README_with_TOC]
-
 もちろん `-t` オプションを指定しなれば従前通りTOC無しで`README.md`ファイルが生成される。
 
 ```
 $ ./readmeconv.sh
 ```
 
+これによって `REAMDE.md` ファイルの中に目次が生成された。
+
+image::docs/images/README_with_TOC.png[README_with_TOC]
+
+=== ツールのバージョン
+
+わたしが自分の環境にインストールしたツールのバージョンは下記のとおりだった。
+
+[source]
+----
+$ asciidoctor -v
+Asciidoctor 2.0.16 [https://asciidoctor.org]
+Runtime Environment (ruby 2.6.8p205 (2021-07-07 revision 67951) [universal.x86_64-darwin21]) (lc:UTF-8 fs:UTF-8 in:UTF-8 ex:UTF-8)
+:~/github/AsciidocToMarkdownConversionWithTOC (master *)
+$ pandoc -v
+pandoc 2.16.1
+Compiled with pandoc-types 1.22.1, texmath 0.12.3.2, skylighting 0.12.1,
+citeproc 0.6, ipynb 0.1.0.2
+User data directory: /Users/kazurayam/.local/share/pandoc
+Copyright (C) 2006-2021 John MacFarlane. Web:  https://pandoc.org
+This is free software; see the source for copying conditions. There is no
+warranty, not even for merchantability or fitness for a particular purpose.
+----
+
+=== pandocがバグっていた!?
+
+pandocが生成した`README.md`をGitHubにpushし、ブラウザで開いてみた。TOCのリンクを
 
