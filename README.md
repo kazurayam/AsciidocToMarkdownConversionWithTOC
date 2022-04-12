@@ -1,11 +1,11 @@
 -   [目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で](#目次つきのreadmeを作る-ただしローカルでasciidocからmarkdownへ変換する方法で)
-    -   [Problem to solve](#problem-to-solve)
-    -   [解決方法](#解決方法)
-        -   [今まで使ってきた方法と課題](#今まで使ってきた方法と課題)
-    -   [代替的方法](#代替的方法)
-        -   [pandocにTOCを生成させる](#pandocにtocを生成させる)
-        -   [問題あり 目次から本文へのリンクが切れていた](#問題あり-目次から本文へのリンクが切れていた)
-    -   [結論](#結論)
+    -   [Problem to solve](#_problem_to_solve)
+    -   [解決方法](#_解決方法)
+        -   [今まで使ってきた方法と課題](#_今まで使ってきた方法と課題)
+    -   [代替的方法](#_代替的方法)
+        -   [pandocにTOCを生成させる](#_pandocにtocを生成させる)
+        -   [問題あり 目次から本文へのリンクが切れていた](#_問題あり_目次から本文へのリンクが切れていた)
+    -   [結論](#_結論)
 
 # 目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で
 
@@ -151,11 +151,15 @@ TOC内のリンク部分のHTMLコードがこれ:
 
     <a id="my-previous-solution" ...>
 
-よく見ると href="#\_my\_previous\_solution" と id="my-previous-solution" とが対応していない。 \_ と - とは違う文字だもの。だからリンク切れするのは当然だ。どうしてこうなってしまったのだろうか？pandocが生成したREAMD.mdファイルのコードをよく見るとこうなっていた。
+よく見ると href="#\_my\_previous\_solution" と id="my-previous-solution" とが対応していない。 \_ と - とは違う文字だもの。だからリンク切れするのは当然だ。どうしてこうなってしまったのだろうか？
 
-      -   [My previous solution](#my-previous-solution)
+pandocが生成したREAMD.mdファイルのコードをよく見るとこうなっていた。
 
-このコードは誤りなのではないか？下記のようなコードをpandocが生成してくれたら解決するだろう。
+      -   [My previous solution](#_my_previous_solution)
+
+このコードは誤りなのではないか？
+
+下記のようなコードをpandocが生成してくれたら解決するだろう。
 
       -   [My previous solution](#my-previous-solution)
 
@@ -172,12 +176,12 @@ Groovy言語でスクリプトを書いた。
      */
     import java.util.regex.Pattern
     import java.util.regex.Matcher
-    Pattern pattern = Pattern.compile('^(.*)\\(#(.*)$')
+    Pattern pattern = Pattern.compile('^(.*)\\(#_(.*)$')
     def stdin = System.in.newReader()
     String line
     while ((line = stdin.readLine()) != null) {
       Matcher m = pattern.matcher(line)
-      if (m.matches()) {
+      if ( !line.startsWith("    ") && m.matches()) {
         /*
         println "does match"
         println "groupCount=" + m.groupCount()

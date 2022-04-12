@@ -8,7 +8,7 @@ def stdin = System.in.newReader()
 String line
 while ((line = stdin.readLine()) != null) {
   Matcher m = pattern.matcher(line)
-  if (m.matches()) {
+  if ( !line.startsWith("    ") && m.matches()) {
     /*
     println "does match"
     println "groupCount=" + m.groupCount()

@@ -157,13 +157,17 @@ TOC内のリンク部分のHTMLコードがこれ:
 <a id="my-previous-solution" ...>
 ----
 
-よく見ると href="#_my_previous_solution" と id="my-previous-solution" とが対応していない。 _ と - とは違う文字だもの。だからリンク切れするのは当然だ。どうしてこうなってしまったのだろうか？pandocが生成したREAMD.mdファイルのコードをよく見るとこうなっていた。
+よく見ると href="#_my_previous_solution" と id="my-previous-solution" とが対応していない。 _ と - とは違う文字だもの。だからリンク切れするのは当然だ。どうしてこうなってしまったのだろうか？
+
+pandocが生成したREAMD.mdファイルのコードをよく見るとこうなっていた。
 
 ----
   -   [My previous solution](#_my_previous_solution)
 ----
 
-このコードは誤りなのではないか？下記のようなコードをpandocが生成してくれたら解決するだろう。
+このコードは誤りなのではないか？
+
+下記のようなコードをpandocが生成してくれたら解決するだろう。
 
 ----
   -   [My previous solution](#my-previous-solution)
