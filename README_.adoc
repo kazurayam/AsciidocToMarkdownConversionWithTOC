@@ -165,9 +165,7 @@ pandocが生成したREAMD.mdファイルのコードをよく見るとこうな
   -   [My previous solution](#_my_previous_solution)
 ----
 
-このコードは誤りなのではないか？
-
-下記のようなコードをpandocが生成してくれたら解決するだろう。
+このコーがまずいんじゃないか？下記のようなコードをpandocが生成してくれたら解決するだろう。
 
 ----
   -   [My previous solution](#my-previous-solution)
@@ -175,7 +173,7 @@ pandocが生成したREAMD.mdファイルのコードをよく見るとこうな
 
 この推測にもとづき README.md ファイルを手書きで修正してGitHubにpushして見た。するとリンクが正しく動いた。
 
-pandocがどうしてこのように動作するのか、わたしは知らない。バグなのかどうかも判断できない。まあ、それはいいことにしよう。わたしがいま望むのはGitHubにアップしたREADME文書のTOCから本文へのリンクが正しく動作することだ。そのためにツールを開発して、pandocが生成したREADME.mdファイルを書き換えることにした。
+pandocが `_my_previous_solution` を生成するいっぽうでGitHubが `my-previous-id` を生成した。このすれ違いが根本的な問題だ。pandocとGitHubは相談していないのだろう。Markdowにはそもそも標準的仕様が無いのでこういうすれ違いが起きるのは避けられないのだろう。わたしがいま望むのはGitHubにアップしたREADME文書のTOCから本文へのリンクが正しく動作することだ。そのためにツールを開発して、pandocが生成したREADME.mdファイルを書き換えることにした。
 
 
 ==== mdTocFilter.groovy
