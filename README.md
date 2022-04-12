@@ -102,7 +102,7 @@ bashシェルスクリプト `readmeconv.sh` を次のように記述した
         mv $fname README.md
     done
 
-pandocコマンドに `--standalon --toc` というオプションを指定していることが肝心。コマンドラインで `readmeconv.sh` を実行するとき、`-t` オプションを付ける。するとTOCが生成されて `README.md` ファイルの先頭に挿入される。
+pandocコマンドに `--standalone --toc` というオプションを指定していることが肝心。コマンドラインで `readmeconv.sh` を実行するとき、`-t` オプションを付ける。するとTOCが生成されて `README.md` ファイルの先頭に挿入される。
 
     $ ./readmeconv.sh -t
 
