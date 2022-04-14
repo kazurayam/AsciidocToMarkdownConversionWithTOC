@@ -56,6 +56,4 @@ done
 #     - [Solution 1](#_solution_1)
 # will be translated to
 #     - [Solution 1](#solution-1)
-cat README.md | groovy mdTocFilter.groovy > temp.md
-cat temp.md > README.md
-rm temp.md
+java -jar ./MarkdownUtils-0.1.0.jar ./README.md

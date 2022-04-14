@@ -1,8 +1,8 @@
 = 目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で
 
-kazurayam
-v1, 2022-01-23
-v2, 2022-04-12
+- kazurayam
+- v1 2022-01-23
+- v2 2022-04-12
 
 == Problem to solve
 
@@ -176,28 +176,23 @@ pandocが生成したREAMD.mdファイルのコードをよく見るとこうな
 pandocが `_my_previous_solution` を生成するいっぽうでGitHubが `my-previous-id` を生成した。このすれ違いが根本的な問題だ。pandocとGitHubは相談していないのだろう。Markdowにはそもそも標準的仕様が無いのでこういうすれ違いが起きるのは避けられないのだろう。わたしがいま望むのはGitHubにアップしたREADME文書のTOCから本文へのリンクが正しく動作することだ。そのためにツールを開発して、pandocが生成したREADME.mdファイルを書き換えることにした。
 
 
-==== mdTocFilter.groovy
+==== MardownUtilsプロジェクト
 
-Groovy言語でスクリプトを書いた。
+GitHubにプロジェクトを作り、そこでJavaクラスを一つ開発した。
 
-[source,groovy]
-----
-include::mdTocFilter.groovy[]
-----
+- https://github.com/kazurayam/MarkdownUtils/blob/master/src/main/java/com/kazurayam/markdownutils/PandocMarkdownTranslator.java[MarkdownUtilsプロジェクト PandocMarkdownTranslator]
 
-このスクリプトがしているのは単純だ。REAMDE.mdファイルの全行をスキャンし、`(#_` を含む行を選んで書き換える。 `(#_my_previous_solution)` を `(#my-previous-solution)` に置換する。
+このJavaクラスはREAMDE.mdファイルを書き換える。`(#_` を含む行を選んで、`(#_my_previous_solution)` を `(#my-previous-solution)` に置換する。
 
 そして link:readmeconv.sh[] の末尾に下記の数行を追加した。
 
 ----
-cat README.md | groovy mdTocFilter.groovy > temp.md
-cat temp.md > README.md
-rm temp.md
+java -jar MarkdownUtils-0.1.0.jar ./README.md 
 ----
 
-このフィルタ処理を経た README.md ファイルをGitHubにpushした。TOCから本文へのジャンプが正しく動作するようになった。
+このフィルタ処理を経た README.md ファイルをGitHubにpushしたら、TOCから本文へのジャンプが正しく動作するようになった。
 
-わたしは最初このフィルタをシェルのsedコマンドやawkで作ろうと試みたがちょっと難しかった。自分のPCにたまたまGroovy環境が整っていたのでフィルタをGroovyで実装した。Perl、Python、Ruby、Nodeでも同等のフィルタを実装できるだろう。
+わたしは最初このフィルタをシェルのsedコマンドやawkで作ろうと試みた。しかしいざやってみると細かいところで色々難しい問題に遭遇した。しっかりとユニットテストをする必要があった。わたしはJavaに慣れているのでフィルタをJavaで実装した。同様の処理をPerl、Python、Ruby、Nodeで実装することはもちろん可能なはずだ。
 
 == 結論
 

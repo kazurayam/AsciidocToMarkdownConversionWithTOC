@@ -1,17 +1,19 @@
 -   [目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で](#目次つきのreadmeを作る-ただしローカルでasciidocからmarkdownへ変換する方法で)
-    -   [Problem to solve](#_problem_to_solve)
-    -   [解決方法](#_解決方法)
-        -   [今まで使ってきた方法と課題](#_今まで使ってきた方法と課題)
-    -   [代替的方法](#_代替的方法)
-        -   [pandocにTOCを生成させる](#_pandocにtocを生成させる)
-        -   [問題あり 目次から本文へのリンクが切れていた](#_問題あり_目次から本文へのリンクが切れていた)
-    -   [結論](#_結論)
+    -   [Problem to solve](#problem-to-solve)
+    -   [解決方法](#解決方法)
+        -   [今まで使ってきた方法と課題](#今まで使ってきた方法と課題)
+    -   [代替的方法](#代替的方法)
+        -   [pandocにTOCを生成させる](#pandocにtocを生成させる)
+        -   [問題あり 目次から本文へのリンクが切れていた](#問題あり-目次から本文へのリンクが切れていた)
+    -   [結論](#結論)
 
 # 目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で
 
-kazurayam
-v1, 2022-01-23
-v2, 2022-04-12
+-   kazurayam
+
+-   v1 2022-01-23
+
+-   v2 2022-04-12
 
 ## Problem to solve
 
@@ -157,56 +159,29 @@ pandocが生成したREAMD.mdファイルのコードをよく見るとこうな
 
       -   [My previous solution](#_my_previous_solution)
 
-このコードは誤りなのではないか？
-
-下記のようなコードをpandocが生成してくれたら解決するだろう。
+このコーがまずいんじゃないか？下記のようなコードをpandocが生成してくれたら解決するだろう。
 
       -   [My previous solution](#my-previous-solution)
 
 この推測にもとづき README.md ファイルを手書きで修正してGitHubにpushして見た。するとリンクが正しく動いた。
 
-pandocがどうしてこのように動作するのか、わたしは知らない。バグなのかどうかも判断できない。まあ、それはいいことにしよう。わたしがいま望むのはGitHubにアップしたREADME文書のTOCから本文へのリンクが正しく動作することだ。そのためにツールを開発して、pandocが生成したREADME.mdファイルを書き換えることにした。
+pandocが `_my_previous_solution` を生成するいっぽうでGitHubが `my-previous-id` を生成した。このすれ違いが根本的な問題だ。pandocとGitHubは相談していないのだろう。Markdowにはそもそも標準的仕様が無いのでこういうすれ違いが起きるのは避けられないのだろう。わたしがいま望むのはGitHubにアップしたREADME文書のTOCから本文へのリンクが正しく動作することだ。そのためにツールを開発して、pandocが生成したREADME.mdファイルを書き換えることにした。
 
-#### mdTocFilter.groovy
+#### MardownUtilsプロジェクト
 
-Groovy言語でスクリプトを書いた。
+GitHubにプロジェクトを作り、そこでJavaクラスを一つ開発した。
 
-    /**
-     * mdTocFilter.groovy
-     */
-    import java.util.regex.Pattern
-    import java.util.regex.Matcher
-    Pattern pattern = Pattern.compile('^(.*)\\(#_(.*)$')
-    def stdin = System.in.newReader()
-    String line
-    while ((line = stdin.readLine()) != null) {
-      Matcher m = pattern.matcher(line)
-      if ( !line.startsWith("    ") && m.matches()) {
-        /*
-        println "does match"
-        println "groupCount=" + m.groupCount()
-        for (int i = 0; i <= m.groupCount(); i++) {
-          println "group[" + i + "]=" + m.group(i)
-        }
-        */
-        println m.group(1) + '(#' + m.group(2).replace('_', '-')
-      } else {
-        //println "no match"
-        println line
-      }
-    }
+-   [MarkdownUtilsプロジェクト PandocMarkdownTranslator](https://github.com/kazurayam/MarkdownUtils/blob/master/src/main/java/com/kazurayam/markdownutils/PandocMarkdownTranslator.java)
 
-このスクリプトがしているのは単純だ。REAMDE.mdファイルの全行をスキャンし、`(#_` を含む行を選んで書き換える。 `(#my-previous-solution)` を `(#my-previous-solution)` に置換する。
+このJavaクラスはREAMDE.mdファイルを書き換える。`(#_` を含む行を選んで、`(#_my_previous_solution)` を `(#my-previous-solution)` に置換する。
 
 そして [readmeconv.sh](readmeconv.sh) の末尾に下記の数行を追加した。
 
-    cat README.md | groovy mdTocFilter.groovy > temp.md
-    cat temp.md > README.md
-    rm temp.md
+    java -jar MarkdownUtils-0.1.0.jar ./README.md
 
-このフィルタ処理を経た README.md ファイルをGitHubにpushした。TOCから本文へのジャンプが正しく動作するようになった。
+このフィルタ処理を経た README.md ファイルをGitHubにpushしたら、TOCから本文へのジャンプが正しく動作するようになった。
 
-わたしは最初このフィルタをシェルのsedコマンドやawkで作ろうと試みたがちょっと難しかった。自分のPCにたまたまGroovy環境が整っていたのでフィルタをGroovyで実装した。Perl、Python、Ruby、Nodeでも同等のフィルタを実装できるだろう。
+わたしは最初このフィルタをシェルのsedコマンドやawkで作ろうと試みた。しかしいざやってみると細かいところで色々難しい問題に遭遇した。しっかりとユニットテストをする必要があった。わたしはJavaに慣れているのでフィルタをJavaで実装した。同様の処理をPerl、Python、Ruby、Nodeで実装することはもちろん可能なはずだ。
 
 ## 結論
 
