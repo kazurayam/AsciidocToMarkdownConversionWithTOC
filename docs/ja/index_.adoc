@@ -1,4 +1,4 @@
 = タイトル
 
 include::attribute.adoc[]
-include::section1.adoc[]
+include::_section1.adoc[]

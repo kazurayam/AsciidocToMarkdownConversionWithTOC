@@ -1,7 +1,8 @@
-# index
+-   [index](#index)
+    -   [section 1](#section-1)
 
-imagesdir=./imagess
+# index
 
 ## section 1
 
-![README with TOC](README_with_TOC.png)
+![README with TOC](./images/README_with_TOC.png)
