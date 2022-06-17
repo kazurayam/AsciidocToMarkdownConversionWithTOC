@@ -56,5 +56,5 @@ done
 #     - [Solution 1](#_solution_1)
 # will be translated to
 #     - [Solution 1](#solution-1)
-java -jar ./toc/MarkdownUtils-0.1.0.jar ./index.md
+java -jar ./lib/MarkdownUtils-0.1.0.jar ./index.md
 
