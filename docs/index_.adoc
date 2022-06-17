@@ -1,4 +1,5 @@
 == index
 
+=== section 1
 
 image::./images/README_with_TOC.png[]
