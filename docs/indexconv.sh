@@ -2,14 +2,23 @@
 
 # Convert all the files with name ending with `*.adoc` into `*.md`.
 # `*.adoc` is an Asciidoc document file, `*.md` is a Mardown document file.
-# E.g, `index_.adoc` will be converted into `index_.md`
+#
+# The file name `index*.adoc` is treaded specially.
+# All files `index` appended with some other string plust `.adoc` 
+# will be renamed to be `index.md`.
+# E.g, `index_.adoc` will be converted into `index.md`
+#
+# If you have `indexX.adoc` and `indexY.adoc`, then 2 adoc file will be transformed
+# into the same `index.md` file; effectively the latter one overwrites the former.
+#
 # Except ones with `_` as prefix.
 # E.g, `_index.adoc` is NOT processed by this script, will be left unprocessed.
 #
-# How to active this: in the command line, just type 
+# How to active this sh script? In the command line, just type 
+# `> cd docs`
 # `> ./indexconv.sh`
 #
-# Can generate Table of content in the output *.md file by specifying `-t` option
+# Can generate TOC (Table of contents) in the output *.md file by specifying `-t` option
 # `> ./indexconv.sh -t`
 
 requireTOC=false
