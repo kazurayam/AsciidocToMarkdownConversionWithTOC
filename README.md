@@ -1,12 +1,3 @@
--   [目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で](#目次つきのreadmeを作る-ただしローカルでasciidocからmarkdownへ変換する方法で)
-    -   [Problem to solve](#problem-to-solve)
-    -   [解決方法](#解決方法)
-        -   [今まで使ってきた方法と課題](#今まで使ってきた方法と課題)
-    -   [代替的方法](#代替的方法)
-        -   [pandocにTOCを生成させる](#pandocにtocを生成させる)
-        -   [問題あり 目次から本文へのリンクが切れていた](#問題あり-目次から本文へのリンクが切れていた)
-    -   [結論](#結論)
-
 # 目次つきのREADMEを作る ただしローカルでAsciidocからMarkdownへ変換する方法で
 
 -   kazurayam
@@ -186,3 +177,8 @@ GitHubにプロジェクトを作り、そこでJavaクラスを一つ開発し�
 ## 結論
 
 わたしはGitHubプロジェクトのREADMEドキュメントをAsciidocで書いている。プログラムのソースコードを文中にincludeするのを自動化したかったから。READMEが長文になったので目次をつけたくなった。pandocコマンドに\`--toc\`オプションを指定して目次を生成したが、残念ながらリンク切れになってしまった。pandocが生成したREADME.mdファイルをほんの少し書きかえるフィルタを自作して、リンク切れを解消することができた。
+
+## 補足
+
+- https://github.com/kazurayam/AsciidocToMarkdownConversionWithTOC/issues/2
+- https://github.com/kazurayam/MarkdownUtils
