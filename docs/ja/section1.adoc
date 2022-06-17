@@ -1,3 +1,4 @@
-== section 1
+== 第 1 章
+
 
 image::README_with_TOC.png[]

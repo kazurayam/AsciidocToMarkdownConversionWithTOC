@@ -1,3 +1,4 @@
 = index
 
+include::attribute.adoc[]
 include::_section1.adoc[]
