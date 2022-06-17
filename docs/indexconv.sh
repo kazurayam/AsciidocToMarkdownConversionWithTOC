@@ -56,6 +56,6 @@ done
 #     - [Solution 1](#_solution_1)
 # will be translated to
 #     - [Solution 1](#solution-1)
-cat index.md | groovy ../mdTocFilter.groovy > temp.md
+cat index.md | groovy ./toc/mdTocFilter.groovy > temp.md
 cat temp.md > index.md
 rm temp.md
