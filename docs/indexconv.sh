@@ -21,6 +21,8 @@
 # Can generate TOC (Table of contents) in the output *.md file by specifying `-t` option
 # `> ./indexconv.sh -t`
 
+SCRIPTDIR=$(cd -P $(dirname $0) && pwd -P)
+
 requireTOC=false
 
 optstring="t"
@@ -34,7 +36,7 @@ while getopts ${optstring} arg; do
     esac
 done
 
-find . -iname "*.adoc" -type f -maxdepth 1 -not -name "_*.adoc" | while read fname; do
+find $SCRIPTDIR -iname "*.adoc" -type f -maxdepth 1 -not -name "_*.adoc" | while read fname; do
     target=${fname//adoc/md}
     xml=${fname//adoc/xml}
     echo "converting $fname into $target"
@@ -55,9 +57,9 @@ done
 # we rename all of them to a single index.md while overwriting,
 # effectively the last wins.
 # E.g, if we have `index_.md`, it will be overwritten into `index.md`
-find . -iname "index*.md" -not -name "index.md" -type f -maxdepth 1 | while read fname; do
+find $SCRIPTDIR -iname "index*.md" -not -name "index.md" -type f -maxdepth 1 | while read fname; do
     echo Renaming $fname to index.md
-    mv $fname index.md
+    mv $fname $SCRIPTDIR/index.md
 done
 
 
@@ -65,5 +67,5 @@ done
 #     - [Solution 1](#_solution_1)
 # will be translated to
 #     - [Solution 1](#solution-1)
-java -jar ./lib/MarkdownUtils-0.1.0.jar ./index.md
+java -jar $SCRIPTDIR/lib/MarkdownUtils-0.1.0.jar $SCRIPTDIR/index.md
 
